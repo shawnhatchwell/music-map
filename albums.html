@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'></meta>
+		<title>album chart</title>
+		<script src="jquery.js"></script>
+		<script src="cytoscape.min.js"></script>
+		
+	</head>
+
+	<style>
+		#cy {
+		width: 1920px;
+		height: 1080px;
+		display: block;
+	}
+	</style>
+
+	<body>
+		<div id="cy"></div>
+		<!--CODE GOES IN HERE-->
+		<script>
+			var layout =
+			{
+				name: 'cose'
+			};
+
+			var cy = cytoscape({
+				container: document.getElementById('cy'), // container to render in
+				style: [ // the stylesheet for the graph
+				{
+					selector: 'node',
+					style: {
+					'background-color': '#666',
+					'label': 'data(id)'
+					}
+				},
+				{
+					selector: 'edge',
+					style: {
+					'width': 3,
+					'line-color': '#ccc',
+					'target-arrow-color': '#ccc',
+					'target-arrow-shape': 'triangle',
+					'curve-style': 'bezier'
+					}
+				}
+				],
+				layout: layout,
+				wheelSensitivity: 0.1
+			});
+		
+			var albums = [];
+			var connections =
+			[
+				["northstar", "tbs"],
+				["tbs", "brand new"],
+				["northstar", "valencia"],
+				["valencia", "ten second epic"],
+				["northstar", "just surrender"],
+				["ptv", "sws"],
+				["glass beach", "origami angel"],
+				["origami angel", "jank"],
+				["jank", "fbhf"],
+				["fbhf", "origami angel"],
+				["tommy boys", "invalids"],
+				["six gallery", "ttng"],
+				["ttng", "delta sleep"],
+				["chon", "polyphia"],
+				["chon", "totorro"],
+				["totorro", "quadrilles"],
+				["tai", "format"],
+				["tommy boys", "macseal"],
+				["macseal", "oso oso"],
+				["oso oso", "coldplay"],
+				["coldplay", "pedro the lion"],
+				["pedro the lion", "oso oso"],
+				["look mexico", "owen new leaves"],
+				["owen new leaves", "owl city"],
+				["charmer old album", "tigers jaw pizza album (or other idk)"],
+				["state champs", "all time low swir"],
+				["state champs", "with the punches"]
+
+				//TODO: add escape the fate, midtown, paramore all we know, party scene atl, rise against, look mexico
+			];
+			
+			connections.forEach(pair => {
+				//TODO: album cover, album official name, album link
+				if(!albums.includes(pair[0])){
+					albums.push(pair[0]);
+					cy.add({data: {id: pair[0]}});
+				}
+				if(!albums.includes(pair[1])){
+					albums.push(pair[1]);
+					cy.add({data: {id: pair[1]}});
+				}
+				cy.add({data: {source: pair[0], target: pair[1]}});
+			});
+
+			cy.layout(layout).run();
+
+		</script>
+	</body>
+</html>
